@@ -142,7 +142,29 @@ class WalletSoapServer
             return $this->response(false, '05', 'Error al confirmar pago: ' . $e->getMessage());
         }
     }
+    public function consultarSaldo($document, $phone)
+    {
+        $validator = Validator::make([
+            'document' => $document,
+            'phone' => $phone,
+        ], [
+            'document' => 'required|exists:clients,document',
+            'phone' => 'required|exists:clients,phone',
+        ]);
 
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            return $this->response(false, '01', implode(' ', $errors));
+        }
+
+        try {
+            $client = Client::where('document', $document)->where('phone', $phone)->firstOrFail();
+            $amount = number_format($client->wallet->balance, 0, '.', '.');
+            return $this->response(true, '00', ['balance' => $amount]);
+        } catch (\Exception $e) {
+            return $this->response(false, '06', 'Error al consultar saldo: ' . $e->getMessage());
+        }
+    }
 
     // Método de respuesta que puede ser reutilizado
     private function response($success, $code, $message)
