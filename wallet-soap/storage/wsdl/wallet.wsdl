@@ -8,36 +8,37 @@
 
     <!-- Definición de Mensajes -->
     <message name="registroClienteRequest">
-        <part name="documento" type="xsd:string"/>
-        <part name="nombres" type="xsd:string"/>
+        <part name="document" type="xsd:string"/>
+        <part name="name" type="xsd:string"/>
         <part name="email" type="xsd:string"/>
-        <part name="celular" type="xsd:string"/>
+        <part name="phone" type="xsd:string"/>
     </message>
 
     <message name="registroClienteResponse">
-        <part name="codigo" type="xsd:int"/>
-        <part name="mensaje" type="xsd:string"/>
+        <part name="success" type="xsd:boolean"/>
+        <part name="cod" type="xsd:string"/>
+        <part name="message" type="xsd:string"/>
     </message>
 
     <message name="recargaBilleteraRequest">
-        <part name="documento" type="xsd:string"/>
-        <part name="celular" type="xsd:string"/>
+        <part name="document" type="xsd:string"/>
+        <part name="phone" type="xsd:string"/>
         <part name="valor" type="xsd:float"/>
     </message>
 
     <message name="recargaBilleteraResponse">
-        <part name="codigo" type="xsd:int"/>
-        <part name="mensaje" type="xsd:string"/>
+        <part name="code" type="xsd:int"/>
+        <part name="message" type="xsd:string"/>
     </message>
 
     <message name="pagarRequest">
-        <part name="documento" type="xsd:string"/>
-        <part name="monto" type="xsd:float"/>
+        <part name="document" type="xsd:string"/>
+        <part name="amount" type="xsd:float"/>
     </message>
 
     <message name="pagarResponse">
-        <part name="codigo" type="xsd:int"/>
-        <part name="mensaje" type="xsd:string"/>
+        <part name="cod" type="xsd:int"/>
+        <part name="message" type="xsd:string"/>
         <part name="session_id" type="xsd:string"/>
     </message>
 
@@ -47,18 +48,18 @@
     </message>
 
     <message name="confirmarPagoResponse">
-        <part name="codigo" type="xsd:int"/>
-        <part name="mensaje" type="xsd:string"/>
+        <part name="cod" type="xsd:int"/>
+        <part name="message" type="xsd:string"/>
     </message>
 
     <message name="consultarSaldoRequest">
-        <part name="documento" type="xsd:string"/>
-        <part name="celular" type="xsd:string"/>
+        <part name="document" type="xsd:string"/>
+        <part name="phone" type="xsd:string"/>
     </message>
 
     <message name="consultarSaldoResponse">
-        <part name="codigo" type="xsd:int"/>
-        <part name="saldo" type="xsd:float"/>
+        <part name="cod" type="xsd:int"/>
+        <part name="balance" type="xsd:float"/>
     </message>
 
     <!-- Definición del PortType -->
