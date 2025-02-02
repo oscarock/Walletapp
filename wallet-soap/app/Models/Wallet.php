@@ -11,4 +11,10 @@ class Wallet extends Model
         'client_id',
         'balance'
     ];
+
+    // Relación inversa, cada billetera pertenece a un cliente
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

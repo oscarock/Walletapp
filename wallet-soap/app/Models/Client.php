@@ -13,4 +13,10 @@ class Client extends Model
         'email',
         'phone'
     ];
+
+     // Relación uno a uno con Wallet
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
+    }
 }

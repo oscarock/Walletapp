@@ -3,6 +3,7 @@
 namespace App\Services\Soap;
 
 use App\Models\Client;
+use App\Models\Token;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Validator;
 
@@ -60,7 +61,7 @@ class WalletSoapServer
         }
         try {
             $client = Client::where('document', $document)->where('phone', $phone)->firstOrFail();
-            $wallet = Wallet::where('client_id', $client->id)->firstOrFail();
+            $wallet = $client->wallet;
             $wallet->balance += $amount;
             $wallet->save();
 
@@ -70,6 +71,7 @@ class WalletSoapServer
         }
     }
 
+    
 
 
     // Método de respuesta que puede ser reutilizado
