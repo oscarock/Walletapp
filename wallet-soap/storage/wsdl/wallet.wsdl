@@ -32,7 +32,6 @@
 
     <message name="pagarRequest">
         <part name="documento" type="xsd:string"/>
-        <part name="celular" type="xsd:string"/>
         <part name="monto" type="xsd:float"/>
     </message>
 

@@ -52,7 +52,7 @@ class WalletSoapServer
         ], [
             'document' => 'required|exists:clients,document',
             'phone' => 'required|exists:clients,phone',
-            'amount' => 'integer',
+            'amount' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -71,7 +71,46 @@ class WalletSoapServer
         }
     }
 
-    
+    public function pagar($document, $amount)
+    {
+
+        $validator = Validator::make([
+            'document' => $document,
+            'amount' => $amount,
+        ], [
+            'document' => 'required|exists:clients,document',
+            'amount' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            return $this->response(false, '01', implode(' ', $errors)); // Retorna los errores
+        }
+        try {
+            $client = Client::where('document', $document)->firstOrFail();
+            $wallet = $client->wallet;
+
+            if ($wallet->balance < $amount) {
+                return $this->response(false, '03', 'Saldo insuficiente');
+            }
+
+            $session_id = \Str::uuid();
+            $token = rand(100000, 999999);
+
+            Token::create([
+                'client_id' => $client->id,
+                'session_id' => $session_id,
+                'token' => $token,
+            ]);
+
+            // Simular envío de correo
+            \Log::info("Token enviado al email {$client->email}: $token");
+
+            return $this->response(true, '00', 'Token generado con éxito. Revisa tu correo', ['session_id' => $session_id]);
+        } catch (\Exception $e) {
+            return $this->response(false, '04', 'Error al generar pago: ' . $e->getMessage());
+        }
+    }
 
 
     // Método de respuesta que puede ser reutilizado
