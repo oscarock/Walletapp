@@ -96,10 +96,11 @@ class WalletSoapServer
 
             $session_id = \Str::uuid();
             $token = rand(100000, 999999);
+            $session_data = base64_encode(serialize(['session_id' => $session_id, 'amount' => $amount]));
 
             Token::create([
                 'client_id' => $client->id,
-                'session_id' => $session_id,
+                'session_id' => $session_data,
                 'token' => $token,
             ]);
 
@@ -109,6 +110,36 @@ class WalletSoapServer
             return $this->response(true, '00', 'Token generado con éxito. Revisa tu correo', ['session_id' => $session_id]);
         } catch (\Exception $e) {
             return $this->response(false, '04', 'Error al generar pago: ' . $e->getMessage());
+        }
+    }
+
+    public function confirmarPago($session_id, $token)
+    {
+        $validator = Validator::make([
+            'session_id' => $session_id,
+            'token' => $token,
+        ], [
+            'session_id' => 'required|exists:tokens,session_id',
+            'token' => 'required|exists:tokens,token',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            return $this->response(false, '01', implode(' ', $errors));
+        }
+        try {
+            $tokenData = Token::where('session_id', $session_id)->where('token', $token)->firstOrFail();
+            $wallet = $tokenData->client->wallet;
+            $data = unserialize(base64_decode($session_id));
+
+            $wallet->balance -= $data['amount'];
+            $wallet->save();
+
+            $tokenData->delete();
+
+            return $this->response(true, '00', 'Pago confirmado con éxito');
+        } catch (\Exception $e) {
+            return $this->response(false, '05', 'Error al confirmar pago: ' . $e->getMessage());
         }
     }
 

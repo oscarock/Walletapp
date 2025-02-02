@@ -19,4 +19,10 @@ class Client extends Model
     {
         return $this->hasOne(Wallet::class);
     }
+
+     // Relación uno a muchos con Token
+    public function tokens()
+    {
+        return $this->hasMany(Token::class);
+    }
 }

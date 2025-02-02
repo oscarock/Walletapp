@@ -12,4 +12,10 @@ class Token extends Model
         'session_id',
         'token'
     ];
+
+     // Relación con Client
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }
