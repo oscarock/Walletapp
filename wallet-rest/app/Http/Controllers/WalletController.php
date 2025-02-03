@@ -44,5 +44,31 @@ class WalletController extends Controller
         }
     }
 
+    public function recargarBilletera(Request $request)
+    {
+        try {
+            $client = new SoapClient($this->soapUrl, [
+                'trace' => 1,
+                'exceptions' => true,
+            ]);
+
+            $response = $client->__soapCall('recargaBilletera', [
+                'document' => $request->input('document'),
+                'phone' => $request->input('phone'),
+                'valor' => $request->input('valor')
+            ]);
+
+            return response()->json([
+                'code' => is_null($response["code"]) ? "01" : "00",
+                'message' => $response["message"]
+            ]);
+        } catch (SoapFault $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
     
 }

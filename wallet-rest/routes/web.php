@@ -18,6 +18,6 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('registro-cliente', 'WalletController@registroCliente');
-$router->post('reload-wallet', 'WalletController@reloadWallet');
+$router->post('recargar-billetera', 'WalletController@recargarBilletera');
 $router->post('pay', 'WalletController@pay');
 $router->get('check-balance', 'WalletController@checkBalance');
