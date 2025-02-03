@@ -105,7 +105,7 @@ class WalletSoapServer
             ]);
 
             // Simular envío de correo
-            \Log::info("Token enviado al email {$client->email}: $token y sessionId: $session_id");
+            \Log::info("Token enviado al email {$client->email}: $token y sessionId: $session_data");
 
             return $this->response(true, '00', 'Token generado con éxito. Revisa tu correo', ['session_id' => $session_id]);
         } catch (\Exception $e) {
