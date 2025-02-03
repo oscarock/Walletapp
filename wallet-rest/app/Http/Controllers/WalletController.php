@@ -109,7 +109,32 @@ class WalletController extends Controller
             ]);
 
             return response()->json([
-                'code' => is_null($response["cod"]) ? "01" : "00",
+                'code' => $response["cod"],
+                'message' => $response["message"]
+            ]);
+        } catch (SoapFault $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function consultarSaldo(Request $request)
+    {
+        try {
+            $client = new SoapClient($this->soapUrl, [
+                'trace' => 1,
+                'exceptions' => true,
+            ]);
+
+            $response = $client->__soapCall('consultarSaldo', [
+                'document' => $request->input('document'),
+                'phone' => $request->input('phone')
+            ]);
+
+            return response()->json([
+                'code' => $response["cod"],
                 'message' => $response["message"]
             ]);
         } catch (SoapFault $e) {

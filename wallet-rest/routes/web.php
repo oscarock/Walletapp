@@ -21,3 +21,4 @@ $router->post('registro-cliente', 'WalletController@registroCliente');
 $router->post('recargar-billetera', 'WalletController@recargarBilletera');
 $router->post('pagar', 'WalletController@pagar');
 $router->post('confirmar-pago', 'WalletController@confirmarPago');
+$router->post('consultar-saldo', 'WalletController@consultarSaldo');
