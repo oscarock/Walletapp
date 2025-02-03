@@ -95,5 +95,28 @@ class WalletController extends Controller
         }
     }
 
-   
+    public function confirmarPago(Request $request)
+    {
+        try {
+            $client = new SoapClient($this->soapUrl, [
+                'trace' => 1,
+                'exceptions' => true,
+            ]);
+
+            $response = $client->__soapCall('confirmarPago', [
+                'sessionId' => $request->input('sessionId'),
+                'token' => $request->input('token')
+            ]);
+
+            return response()->json([
+                'code' => is_null($response["cod"]) ? "01" : "00",
+                'message' => $response["message"]
+            ]);
+        } catch (SoapFault $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
 }

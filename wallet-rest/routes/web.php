@@ -20,4 +20,4 @@ $router->get('/', function () use ($router) {
 $router->post('registro-cliente', 'WalletController@registroCliente');
 $router->post('recargar-billetera', 'WalletController@recargarBilletera');
 $router->post('pagar', 'WalletController@pagar');
-$router->get('check-balance', 'WalletController@checkBalance');
+$router->post('confirmar-pago', 'WalletController@confirmarPago');
